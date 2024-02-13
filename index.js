@@ -58,7 +58,7 @@ function ask(questionText) {
 
   async function start() {
   console.log("Please think of a number between 1 and 100 (inclusive).\nI will try to guess it.");
-  let guess = await ask(`Is it... ${randomNumber}? `);
+  let guess = await ask(`Is it... ${randomNumber}? (Y/N) `);
   //console.log(guess);  //logs out secretNumber for testing purposes (remove in live version)
   let higherOrLower;
 
@@ -66,17 +66,17 @@ function ask(questionText) {
   if (guess == "N" || guess == "no" || guess == "n") {
     higherOrLower = await ask("Is your number higher(h) or lower(l)? ");
     if (higherOrLower == "h") {
-        randomNumber = Math.floor(Math.random() * (100 - randomNumber) + randomNumber + 1);
+        randomNumber = Math.floor(Math.random() * (100 - randomNumber) - randomNumber + 1);
         console.log(randomNumber); //logs what it generated
-        guess = await ask(`Is it... ${randomNumber}? `);
+        guess = await ask(`Is it... ${randomNumber}? (Y/N) `);
       } else if (higherOrLower == "l") {
         randomNumber = Math.floor(Math.random() * (randomNumber - 1) + 1);
         console.log(randomNumber); //logs what it generated
-        guess = await ask(`Is it... ${randomNumber}? `);
+        guess = await ask(`Is it... ${randomNumber}? (Y/N) `);
       }
   }
 }
-if (guess == "Y" || guess == "yes" || guess == "y") {
+  if (guess == "Y" || guess == "yes" || guess == "y") {   
   console.log(`Your number was ${randomNumber}!`);
 }
 process.exit();
