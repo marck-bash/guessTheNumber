@@ -52,16 +52,34 @@ function ask(questionText) {
           higherOrLower = await ask("Is your number higher(h) or lower(l)? ");      
       if (higherOrLower == "h") {  
         minNum = randomNumber + 1 //sets up the minimum number for the range in our function randomIntFromInterval (the lowest it would be would be our randomNumber + 1)
+        //Cheat Detection code block
+        if (maxNum <= randomNumber) {
+          console.log(`You said your number was lower than ${minNum}, so it can't be also be higher than ${randomNumber}`)
+          //ask player if they want to play again after cheating is detected
+          let cheatReplay = await ask(`Would you like to play again? (Y/N) `);
+          if (cheatReplay == "Y" || cheatReplay == "yes" || cheatReplay == "y") {
+            gameStart();
+          } else {
+          process.exit();
+          }
+        }
         randomNumber = randomIntFromInterval(minNum, maxNum);
         //console.log(randomNumber); //logs what it generated
-        // Trying to work in Cheat Detection code block
-        //  if (randomNumber <= min){
-        //    console.log(`You said your number was higher than ${randomNumber}, so it can't be also be lower than ${min}`)
-        //  }
         guessCounter++;
         guess = await ask(`Is it... ${randomNumber}? (Y/N) `);
       } else if (higherOrLower == "l") {
         maxNum = randomNumber - 1;    //sets up the maximum number for the range in our function randomIntFromInterval (the highest it would be would be our randomNumber - 1)
+        //Cheat Detection code block
+        if (minNum >= randomNumber) {
+          console.log(`You said your number was higher than ${maxNum}, so it can't be also be lower than ${randomNumber}`)
+          //ask player if they want to play again after cheating is detected
+          let cheatReplay = await ask(`Would you like to play again? (Y/N) `);
+          if (cheatReplay == "Y" || cheatReplay == "yes" || cheatReplay == "y") {
+            gameStart();
+          } else {
+          process.exit();
+          }
+        }
         randomNumber = randomIntFromInterval(minNum, maxNum);
         //console.log(randomNumber); //logs what it generated
         guessCounter++;
