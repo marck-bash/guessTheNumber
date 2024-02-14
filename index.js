@@ -56,13 +56,14 @@ function ask(questionText) {
 // to guess between the range for binary algorithm, add a divide by two after the 100 in here to get it to guess 50 off the bat, this will reduce the amount of guesses necessary
 
   //original function to guess linearly
-  function randomIntFromInterval(min, max) { // min and max included 
-    return Math.floor(Math.random() * (max - min + 1) + min)  
-  }
-
   // function randomIntFromInterval(min, max) { // min and max included 
-  //   return Math.floor(Math.round((max + min) / 2))  
+  //   return Math.floor(Math.random() * (max - min + 1) + min)  
   // }
+
+  //function using binary algorithm
+  function randomIntFromInterval(min, max) { // min and max included 
+    return (Math.round((max + min) / 2))  
+  }
 
   //pick a game to start cpuGameStart() or reverseGameStart()
   async function gameStart() {
