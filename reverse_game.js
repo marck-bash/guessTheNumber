@@ -14,25 +14,24 @@ let randomNumber = Math.floor(Math.random() * 100);
 if (randomNumber === 0) {
   randomNumber = randomNumber + 1;   
 }
-console.log(randomNumber); //logs out guess for testing purposes (remove in live version)
+//console.log(randomNumber); //logs out guess for testing purposes (remove in live version)
+
 start();
-async function start() {
-  console.log("Let's play a game where I (the computer) pick a number and you try to guess it.\n")
-  let secretNumber = await ask("What is your secret number?\nI won't peek, I promise...\n");
-  console.log('You entered: ' + secretNumber);
+async function start() {  //rename the async function so that it can be called in the original index.js file
+  console.log("Let's play a game where I (the computer) pick a number and you try to guess it. (1 - 100)\n")
+  let guess = await ask("What is your first guess?: ");
+  console.log('You entered: ' + guess);
   // Now try and complete the program.
-  let guess = await ask("Please guess a number: ");
-  console.log("GUESS:", guess);
-  while (secretNumber != guess) {
-    if (guess < secretNumber) {
+    while (randomNumber != guess) {
+    if (guess < randomNumber) {
         guess = await ask("Sorry too low.  Please guess higher: ");
-        console.log(guess);
-    } else if (guess > secretNumber) {
+        //console.log(guess);
+    } else if (guess > randomNumber) {
         guess = await ask("sorry too high.  Please guess lower: ");
-        console.log(guess);
+        //console.log(guess);
     }
     }
-    console.log("You guess correctly!");
+    console.log(`You guess correctly! The answer was ${randomNumber}`);
 //   secret number = 44
 //   my guess secret number = 20
 //   my guess is lower

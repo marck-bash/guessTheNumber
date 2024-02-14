@@ -48,47 +48,52 @@ function ask(questionText) {
   //   console.log(secretNumber); //logs out guess for testing purposes (remove in live version)
   // } 
     //generate a random number for the player to guess against the secretNumber
-  let randomNumber = Math.floor(Math.random() * 100);
-  if (randomNumber === 0) {
-    randomNumber = randomNumber + 1;
-    console.log(randomNumber); //logs out guess for testing purposes (remove in live version)
+
+  let min = 1;
+  let max = 100;
+
+  let randomNumber = Math.floor(Math.random() * max + min); // to guess between the range for binary algorithm, add a divide by two after the 100 in here to get it to guess 50 off the bat, this will reduce the amount of guesses necessary
+
+
+  function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)  
   }
+
 
   start();
 
   async function start() {
   console.log("Please think of a number between 1 and 100 (inclusive).\nI will try to guess it.");
-  let guess = await ask(`Is it... ${randomNumber}? (Y/N) `);
-  //console.log(guess);  //logs out secretNumber for testing purposes (remove in live version)
-  let higherOrLower;
-
+  let guess = await ask(`Is it... ${randomNumber}? (Y/N) `);  
+  let higherOrLower;  //instantiate the variable that will recieve either h or l response for the if...else logic inside the while loop
+  let guessCounter = 0;  //used to increment the amount of rounds played within the game
   while (guess == "N" || guess == "no" || guess == "n") {
-  if (guess == "N" || guess == "no" || guess == "n") {
-    higherOrLower = await ask("Is your number higher(h) or lower(l)? ");
-    if (higherOrLower == "h") {
-        randomNumber = Math.floor(Math.random() * (100 - randomNumber) - randomNumber + 1);
-        console.log(randomNumber); //logs what it generated
-        guess = await ask(`Is it... ${randomNumber}? (Y/N) `);
-      } else if (higherOrLower == "l") {
-        randomNumber = Math.floor(Math.random() * (randomNumber - 1) + 1);
-        console.log(randomNumber); //logs what it generated
-        guess = await ask(`Is it... ${randomNumber}? (Y/N) `);
-      }
-  }
+      if (guess == "N" || guess == "no" || guess == "n") {
+        higherOrLower = await ask("Is your number higher(h) or lower(l)? ");      
+        if (higherOrLower == "h") {  
+          min = randomNumber + 1 //sets up the minimum number for the range in our function randomIntFromInterval (the lowest it would be would be our randomNumber + 1)
+          randomNumber = randomIntFromInterval(min, max);
+          console.log("old number: ", randomNumber); //logs what it generated
+          
+          //  if (randomNumber <= min){
+          //    console.log(`You said your number was higher than ${randomNumber}, so it can't be also be lower than ${randomNumber}`)
+          //  }
+          guessCounter++;
+          guess = await ask(`Is it... ${randomNumber}? (Y/N) `);
+        } else if (higherOrLower == "l") {
+          max = randomNumber - 1;    //sets up the maximum number for the range in our function randomIntFromInterval (the highest it would be would be our randomNumber - 1)
+          randomNumber = randomIntFromInterval(min, max);
+          console.log("old number: ", randomNumber); //logs what it generated
+          guessCounter++;
+          guess = await ask(`Is it... ${randomNumber}? (Y/N) `);
+        }
+     } //put the play again loop here?    
 }
-  if (guess == "Y" || guess == "yes" || guess == "y") {   
-  console.log(`Your number was ${randomNumber}!`);
-}
+  
+if (guess == "Y" || guess == "yes" || guess == "y") {   
+  console.log(`Your number was ${randomNumber}!`);}
+console.log(`You guessed the answer in ${guessCounter} tries!`);
 process.exit();
 }
 
 
-  // while (secretNumber != randomNumber) {
-  //       if (randomNumber < secretNumber) {
-  //           guess = await ask("Sorry too low.  Please guess higher: ");
-  //           console.log(guess);
-  //       } else if (guess > secretNumber) {
-  //           guess = await ask("sorry too high.  Please guess lower: ");
-  //           console.log(guess);
-  //       }
-  // }
